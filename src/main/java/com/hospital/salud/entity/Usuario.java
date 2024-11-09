@@ -28,11 +28,11 @@ public class Usuario implements UserDetails {
 
     @Email
     @Column(unique = true, nullable = false)
-    private String correo;
+    private String email;
 
     @Column(nullable = false)
     private String password;
-    private boolean estado;
+    private boolean activo;
     private boolean cuentaNoExpirada;
     private boolean cuentaNoBloqueada;
     private boolean credencialesNoExpiradas;
@@ -53,10 +53,10 @@ public class Usuario implements UserDetails {
 
     public Usuario( String correo, String password,Set<Rol> rol) {
 
-        this.correo = correo;
+        this.email = correo;
         this.password = password;
         this.roles = rol;
-        this.estado = true;
+        this.activo = true;
         this.cuentaNoExpirada = true;
         this.cuentaNoBloqueada = true;
         this.credencialesNoExpiradas = true;
@@ -70,17 +70,21 @@ public class Usuario implements UserDetails {
 
         roles.forEach(role -> {
             System.out.println("Rol: " + role.getNombre());
-            role.getPermiso().forEach(permiso -> {
-                System.out.println("Permiso: " + permiso.getNombre());
-                authorities.add(new SimpleGrantedAuthority(permiso.getNombre()));
-            });
+
+            if (role.getPermiso() != null) { // Verificación de null para evitar NPE
+                role.getPermiso().forEach(permiso -> {
+                    System.out.println("Permiso: " + permiso.getNombre());
+                    authorities.add(new SimpleGrantedAuthority(permiso.getNombre()));
+                });
+            }
         });
 
         return authorities;
     }
+
     @Override
     public String getUsername() {
-        return correo;
+        return email;
     }
 
     @Override
@@ -100,7 +104,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return estado;
+        return activo;
     }
 
     @Override

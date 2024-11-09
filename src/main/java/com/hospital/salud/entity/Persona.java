@@ -23,7 +23,7 @@ public class Persona  {
      private String email;
      private String telefono;
      private Date fechaNacimiento;
-     private boolean sexo;
+     private String sexo;
 
 
  @OneToOne(mappedBy = "persona")

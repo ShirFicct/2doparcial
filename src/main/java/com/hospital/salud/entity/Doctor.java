@@ -1,5 +1,6 @@
 package com.hospital.salud.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,11 +14,15 @@ import lombok.NoArgsConstructor;
 @Table(name = "doctor")
 public class Doctor {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private boolean activo;
 
-    private String titulo;
-
+    // Relación con Especialidad
+    @ManyToOne
+    @JoinColumn(name = "especialidad_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Especialida especialidad;
     // Relación con Persona
     @OneToOne
     @JoinColumn(name = "persona_ci", referencedColumnName = "ci")

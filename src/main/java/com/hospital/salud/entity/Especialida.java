@@ -1,5 +1,4 @@
 package com.hospital.salud.entity;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,21 +11,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "paciente")
-public class Paciente {
-
+@Table(name = "especialidad")
+public class Especialida {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String nroSeguro;
+    private String nombre;
+    private String descripcion;
     private boolean activo;
-    // Relación con Persona
-    @OneToOne
-    @JoinColumn(name = "persona_ci", referencedColumnName = "ci")
-    private Persona persona;
 
-    // Relación con Reserva (citas)
-    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
-    private List<reserva> reservas;
+
 }

@@ -26,9 +26,9 @@ public class UsuarioDetailsService implements UserDetailsService{
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Usuario usuario = usuarioRepository.findByCorreo(username)
+		Usuario usuario = usuarioRepository.findByEmail(username)
 	            .orElseThrow(() -> new UsernameNotFoundException("Usuario o password inválidos"));
-	        return new User(usuario.getCorreo(), usuario.getPassword(), mapearAutoridadesRoles(usuario.getRoles()));
+	        return new User(usuario.getEmail(), usuario.getPassword(), mapearAutoridadesRoles(usuario.getRoles()));
 	}
 	
 	private Collection<? extends GrantedAuthority> mapearAutoridadesRoles(Collection<Rol> roles) {
@@ -47,7 +47,7 @@ public class UsuarioDetailsService implements UserDetailsService{
 	}
 
     public Usuario getUser(String email) {
-        return usuarioRepository.findByCorreo(email)
+        return usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
     }
 	
