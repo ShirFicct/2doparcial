@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 @Data
 @NoArgsConstructor
@@ -26,7 +27,7 @@ public class Rol implements Serializable {
             joinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "id"),
             inverseJoinColumns =  @JoinColumn(name = "permiso_id", referencedColumnName = "id")
     )
-    private Set<Permiso> permiso;
+    private Set<Permiso> permiso= new HashSet<>();
 
     public Rol(String nombre) {
         super();

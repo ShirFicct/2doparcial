@@ -1,5 +1,6 @@
 package com.hospital.salud.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
@@ -18,12 +19,21 @@ public class reserva {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String estado;
+    private String NroFicha;
+    private boolean estado;
     private Date fechaRegistroReserva;
     private Date horarioInicioAtencion;
     private Date horarioFinAtencion;
 
     @ManyToOne
     @JoinColumn(name = "paciente_id")
+    @JsonIgnore
     private Paciente paciente;
+
+    // Relación con Horario
+    @ManyToOne
+    @JoinColumn(name = "horario_id")
+    @JsonIgnore
+    private Horario horario;
+
 }
