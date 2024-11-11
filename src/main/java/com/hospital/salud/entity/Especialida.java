@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -13,12 +12,15 @@ import java.util.List;
 @Entity
 @Table(name = "especialidad")
 public class Especialida {
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     private String nombre;
+    
     private String descripcion;
+    
     private boolean activo;
-
 
 }

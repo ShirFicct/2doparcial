@@ -9,9 +9,6 @@ import java.util.Optional;
 @Repository
 public interface PersonaRepository extends JpaRepository<Persona, String> {
 
-    // Buscar una persona por su correo electrónico
-    Optional<Persona> findByEmail(String email);
-
     // Buscar una persona por su CI (clave primaria)
     Optional<Persona> findByCi(String ci);
 

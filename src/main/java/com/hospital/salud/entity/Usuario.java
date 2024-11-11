@@ -5,14 +5,12 @@ import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.math3.optim.linear.UnboundedSolutionException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,7 +20,12 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Table(name = "usuario")
 public class Usuario implements UserDetails {
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -32,17 +35,19 @@ public class Usuario implements UserDetails {
 
     @Column(nullable = false)
     private String password;
+    
     private boolean activo;
+    
     private boolean cuentaNoExpirada;
+    
     private boolean cuentaNoBloqueada;
+    
     private boolean credencialesNoExpiradas;
 
-    // Relación con Persona
     @OneToOne
     @JoinColumn(name = "persona_ci", referencedColumnName = "ci")
     private Persona persona;
 
-    // Relación con Rol
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "usuario_roles",
@@ -67,18 +72,6 @@ public class Usuario implements UserDetails {
         Set<GrantedAuthority> authorities = roles.stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getNombre()))
                 .collect(Collectors.toSet());
-
-        roles.forEach(role -> {
-            System.out.println("Rol: " + role.getNombre());
-
-            if (role.getPermiso() != null) { // Verificación de null para evitar NPE
-                role.getPermiso().forEach(permiso -> {
-                    System.out.println("Permiso: " + permiso.getNombre());
-                    authorities.add(new SimpleGrantedAuthority(permiso.getNombre()));
-                });
-            }
-        });
-
         return authorities;
     }
 

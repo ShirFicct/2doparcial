@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,13 +22,13 @@ public class Paciente {
     private Long id;
 
     private String nroSeguro;
-    private boolean activo;
-    // Relación con Persona
+    
     @OneToOne
     @JoinColumn(name = "persona_ci", referencedColumnName = "ci")
+    @JsonIgnore
     private Persona persona;
 
-    // Relación con Reserva (citas)
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
     private List<reserva> reservas;
+    
 }

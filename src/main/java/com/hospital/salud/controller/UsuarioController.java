@@ -161,39 +161,5 @@ public class UsuarioController {
 		}
 	}
 	
-	@PostMapping
-	@PreAuthorize("hasAuthority('ADMINISTRAR_PERSONAL')")
-	public ResponseEntity<ApiResponse<Usuario>> guardarUsuario(@Valid @RequestBody UsuarioDTO grupoDTO, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			List<String> errors = bindingResult.getAllErrors().stream()
-					.map(DefaultMessageSourceResolvable::getDefaultMessage)
-					.collect(Collectors.toList());
-			return new ResponseEntity<>(
-					ApiResponse.<Usuario>builder()
-							.errors(errors)
-							.build(),
-					HttpStatus.BAD_REQUEST
-			);
-		}
-		try {
-			Usuario user = service.registrarUser(grupoDTO);
-			return new ResponseEntity<>(
-					ApiResponse.<Usuario>builder()
-							.statusCode(HttpStatus.CREATED.value())
-							.message(HttpStatusMessage.getMessage(HttpStatus.CREATED))
-							.data(user)
-							.build(),
-					HttpStatus.CREATED
-			);
-		} catch (ResponseStatusException e) {
-			return new ResponseEntity<>(
-					ApiResponse.<Usuario>builder()
-							.statusCode(e.getStatusCode().value())
-							.message(e.getReason())
-							.build(),
-					e.getStatusCode()
-			);
-		}
-	}
 	
 }

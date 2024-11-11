@@ -29,12 +29,12 @@ public class SegurityConfig {
 				.csrf(csrf -> csrf.disable()) // Desactivar CSRF para APIs REST; habilitarlo para formularios si es necesario
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers(
-								"/registro**",          // Permitir acceso sin autenticación
-								"/js/**", "/css/**", "/img/**" // Recursos estáticos
+								"/registro**",         
+								"/js/**", "/css/**", "/img/**" 
 						).permitAll()
-						.requestMatchers(HttpMethod.OPTIONS).permitAll() // Permitir pre-flight requests de CORS
-						.requestMatchers("/salud/auth/**").permitAll()      // Permitir acceso público a autenticación
-						.anyRequest().authenticated() // Requerir autenticación para el resto de las rutas
+						.requestMatchers(HttpMethod.OPTIONS).permitAll() 
+						.requestMatchers("/salud/auth/**").permitAll()      
+						.anyRequest().authenticated() 
 				)
 				.sessionManagement(sessionManager -> sessionManager
 						.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless session management para JWT

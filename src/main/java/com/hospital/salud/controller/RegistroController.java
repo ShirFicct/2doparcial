@@ -24,7 +24,7 @@ public class RegistroController {
 	
 	@PostMapping(value = "register")
 	public ResponseEntity<AuthResponse> register(@RequestBody UsuarioDTO userDto) {
-		return ResponseEntity.ok(userService.createUser(userDto));
+		return ResponseEntity.ok(userService.createUserDoctor(userDto));
 	}
 	
 	@PostMapping(value = "registerAdmin")

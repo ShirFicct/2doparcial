@@ -13,10 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class UsuarioDetailsService implements UserDetailsService{
@@ -32,18 +29,8 @@ public class UsuarioDetailsService implements UserDetailsService{
 	}
 	
 	private Collection<? extends GrantedAuthority> mapearAutoridadesRoles(Collection<Rol> roles) {
-	    return roles.stream()
-	        .flatMap(role -> {
-	            Set<GrantedAuthority> roleAuthorities = new HashSet<>();
-	            roleAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role.getNombre()));
-	            
-	            Set<GrantedAuthority> permissionAuthorities = role.getPermiso().stream()
-	                .map(permiso -> new SimpleGrantedAuthority(permiso.getNombre()))
-	                .collect(Collectors.toSet());
-	            
-	            return Stream.concat(roleAuthorities.stream(), permissionAuthorities.stream());
-	        })
-	        .collect(Collectors.toSet());
+		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getNombre())).
+				collect(Collectors.toSet());
 	}
 
     public Usuario getUser(String email) {
