@@ -25,7 +25,6 @@ public class Paciente {
     
     @OneToOne
     @JoinColumn(name = "persona_ci", referencedColumnName = "ci")
-    @JsonIgnore
     private Persona persona;
 
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
