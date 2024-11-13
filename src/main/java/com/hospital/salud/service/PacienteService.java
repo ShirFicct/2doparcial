@@ -14,11 +14,14 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -111,6 +114,16 @@ public class PacienteService {
 
         workbook.close();
     }
-    
+    public List<Paciente> listarTodosLosPacientes() {
+        return pacienteRepository.findAll();
+    }
 
+    public Paciente obtenerPacientePorId(Long pacienteId) {
+        Optional<Paciente> paciente= pacienteRepository.findById(pacienteId);
+        if (paciente.isPresent()) {
+            return paciente.get();
+        }else {
+               throw  new ResponseStatusException(HttpStatus.NOT_FOUND, "Paciente no encontrado");
+    }
+    }
 }

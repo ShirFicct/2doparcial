@@ -21,11 +21,11 @@ public class Doctor {
 
     @ManyToOne
     @JoinColumn(name = "especialidad_id", referencedColumnName = "id")
+    @JsonIgnore
     private Especialida especialidad;
 
     @OneToOne
     @JoinColumn(name = "persona_ci", referencedColumnName = "ci")
-    @JsonIgnore
     private Persona persona;
     
 }

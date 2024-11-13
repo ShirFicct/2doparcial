@@ -1,32 +1,37 @@
 package com.hospital.salud.entity;
 
-import jakarta.persistence.Entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "historiaClinica")
+@Table(name = "historia_clinica")
 @Entity
 public class HistoriaClinica {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Date fechaCreacion;
+
+    private LocalDateTime fechaCreacion;
     private String titulo;
     private String descripcion;
-
+    private String tipoHistoria;
+    private boolean activo = true;
     @ManyToOne
-    @JoinColumn(name = "paciente_id")
+    @JoinColumn(name = "paciente_id", nullable = false)
+    @JsonIgnore
     private Paciente paciente;
 
-    @OneToMany(mappedBy = "historiaClinica")
+    @OneToMany(mappedBy = "historiaClinica", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Tratamiento> tratamientos;
 }

@@ -28,6 +28,7 @@ public class Paciente {
     private Persona persona;
 
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Reserva> reservas;
     
 }
