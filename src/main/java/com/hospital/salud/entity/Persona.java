@@ -1,5 +1,7 @@
 package com.hospital.salud.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,9 +30,11 @@ public class Persona {
 	private String sexo;
 
 	@OneToOne(mappedBy = "persona")
+	@JsonIgnore
 	private Doctor doctor;
 
 	@OneToOne(mappedBy = "persona")
+	@JsonIgnore
 	private Paciente paciente;
 	
 }

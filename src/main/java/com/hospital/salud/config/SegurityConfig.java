@@ -8,9 +8,15 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -24,22 +30,45 @@ public class SegurityConfig {
 	private AuthenticationProvider authenticationProvider;
 
 	@Bean
-	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		return http
-				.csrf(csrf -> csrf.disable()) // Desactivar CSRF para APIs REST; habilitarlo para formularios si es necesario
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		http
+				.cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource()))
+				.csrf(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers(
-								"/registro**",         
-								"/js/**", "/css/**", "/img/**" 
+								"/salud/v3/api-docs/**",
+								"/salud/swagger-ui/**",
+								"/salud/swagger-ui.html",
+								"/salud/swagger-resources/**",
+								"/salud/webjars/**",
+								"/salud/auth/**",
+								"/v3/api-docs/**",
+								"/swagger-ui/**",
+								"/swagger-ui.html",
+								"/swagger-resources/**",
+								"/webjars/**"
 						).permitAll()
-						.requestMatchers(HttpMethod.OPTIONS).permitAll() 
-						.requestMatchers("/salud/auth/**").permitAll()      
-						.anyRequest().authenticated() 
+						.requestMatchers(HttpMethod.OPTIONS).permitAll()
+						.anyRequest().authenticated()
 				)
 				.sessionManagement(sessionManager -> sessionManager
-						.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless session management para JWT
+						.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authenticationProvider(authenticationProvider)
-				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-				.build();
+				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+		return http.build();
+	}
+
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(List.of("*"));
+		configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+		configuration.setAllowedHeaders(List.of("*"));
+		configuration.setAllowCredentials(true);
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
 	}
 }

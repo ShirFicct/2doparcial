@@ -1,5 +1,6 @@
 package com.hospital.salud.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
@@ -7,9 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.print.Doc;
 import java.util.List;
-import com.hospital.salud.entity.Documents;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,16 +17,18 @@ import com.hospital.salud.entity.Documents;
 @Entity
 public class Tratamiento {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String titulo;
     private String detalle;
     private String receta;
-
+private boolean activo;
     @ManyToOne
-    @JoinColumn(name = "historiaClinica_id")
+    @JoinColumn(name = "historiaClinica_id", nullable = false)
+    @JsonIgnore
     private HistoriaClinica historiaClinica;
 
-    @OneToMany(mappedBy = "tratamiento")
-    private List<Documents> documentos;
+    @OneToMany(mappedBy = "tratamiento", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Documentos> documentos;
 }

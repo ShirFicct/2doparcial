@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.security.PrivateKey;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -19,18 +21,19 @@ public class Horario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Date HoraInicio;
-    private Date HoraFin;
+    private LocalDate fecha;
+    private LocalTime HoraInicio;
+    private LocalTime HoraFin;
     private String dia;
-
+private boolean activo;
     @ManyToOne
     @JoinColumn(name = "doctor_id")
-    @JsonIgnore
+
     private Doctor doctor;
 
     // Relación opcional para acceder a todas las reservas en este horario
     @OneToMany(mappedBy = "horario")
     @JsonIgnore
-    private List<reserva> reservas;
+    private List<Reserva> reservas;
 
 }

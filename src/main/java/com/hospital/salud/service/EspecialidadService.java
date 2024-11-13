@@ -1,5 +1,6 @@
 package com.hospital.salud.service;
 
+import com.hospital.salud.dto.EspecialidadDTO;
 import com.hospital.salud.entity.Especialida;
 import com.hospital.salud.repository.EspecialidadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +22,27 @@ public class EspecialidadService {
 
     public Especialida obtenerEspecialidad(Long id) {
         Optional<Especialida> especialidad = especialidadRepository.findById(id);
+<<<<<<< HEAD
         if (!especialidad.isPresent()) {
+=======
+        if (especialidad.isPresent()) {
+            return especialidad.get();
+            }else {
+>>>>>>> 0a6b73cc5e43b0c41e12c72ca0cfd80e5ec51314
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Especialidad no encontrada");
         }
-        return especialidad.get();
+
     }
 
-    public Especialida save (Especialida especialidad) {
-        especialidad.setActivo(true);
-        return especialidadRepository.save(especialidad);
+    public Especialida save (EspecialidadDTO especialidad) {
+        Especialida especialida= new Especialida();
+        especialida.setNombre(especialidad.getNombre());
+        especialida.setDescripcion(especialidad.getDescripcion());
+        especialida.setActivo(true);
+        return especialidadRepository.save(especialida);
     }
 
-    public Especialida actualizar (Long id, Especialida especialidad) {
+    public Especialida actualizar (Long id, EspecialidadDTO especialidad) {
         Especialida especialidadActual = obtenerEspecialidad(id);
         especialidadActual.setNombre(especialidad.getNombre());
         especialidadActual.setDescripcion(especialidad.getDescripcion());
