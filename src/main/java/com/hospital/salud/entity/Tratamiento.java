@@ -30,6 +30,5 @@ private boolean activo;
     private HistoriaClinica historiaClinica;
 
     @OneToMany(mappedBy = "tratamiento", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
     private List<Documentos> documentos;
 }

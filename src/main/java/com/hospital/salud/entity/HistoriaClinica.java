@@ -28,10 +28,10 @@ public class HistoriaClinica {
     private boolean activo = true;
     @ManyToOne
     @JoinColumn(name = "paciente_id", nullable = false)
-    @JsonIgnore
+
     private Paciente paciente;
 
     @OneToMany(mappedBy = "historiaClinica", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
+
     private List<Tratamiento> tratamientos;
 }
