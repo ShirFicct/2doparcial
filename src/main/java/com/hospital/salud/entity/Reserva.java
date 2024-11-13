@@ -1,29 +1,28 @@
 package com.hospital.salud.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
 import jakarta.persistence.*;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
-
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Table(name = "reserva")
-public class reserva {
+public class Reserva {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String NroFicha;
-    private boolean estado;
-    private Date fechaRegistroReserva;
-    private Date horarioInicioAtencion;
-    private Date horarioFinAtencion;
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long id;
+    private int NroFicha;
+    private String estado;
+    private LocalDate fechaRegistroReserva;
+    private LocalTime horarioInicioAtencion;
+    private LocalTime horarioFinAtencion;
 
     @ManyToOne
     @JoinColumn(name = "paciente_id")
@@ -35,5 +34,4 @@ public class reserva {
     @JoinColumn(name = "horario_id")
     @JsonIgnore
     private Horario horario;
-
 }

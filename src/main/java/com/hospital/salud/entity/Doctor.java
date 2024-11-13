@@ -17,11 +17,12 @@ public class Doctor {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
+
     @ManyToOne
     @JoinColumn(name = "especialidad_id", referencedColumnName = "id")
     private Especialida especialidad;
-    
+
     @OneToOne
     @JoinColumn(name = "persona_ci", referencedColumnName = "ci")
     @JsonIgnore
