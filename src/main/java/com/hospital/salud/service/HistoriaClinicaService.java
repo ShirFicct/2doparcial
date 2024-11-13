@@ -23,6 +23,14 @@ public class HistoriaClinicaService {
         return historiaClinicaRepository.findAll();
     }
 
+    public List<HistoriaClinica>findAllByPaciente(Long PacienteId) {
+      Paciente paciente=pacienteService.obtenerPacientePorId(PacienteId);
+     if (paciente==null){
+    throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Paciente no encontrado");
+    }
+    return historiaClinicaRepository.findByPacienteId(PacienteId);
+    }
+
     public HistoriaClinica obtenerById(Long id) {
         Optional<HistoriaClinica> historiaClinica = historiaClinicaRepository.findById(id);
         if (historiaClinica.isPresent()) {

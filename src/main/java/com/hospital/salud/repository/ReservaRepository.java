@@ -18,4 +18,6 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
 
     // Actualizar el método para que acepte LocalDate
     boolean existsByPacienteAndFechaRegistroReserva(Paciente paciente, LocalDate fechaRegistroReserva);
+
+    List<Reserva> findByPacienteId(Long pacienteId);
 }

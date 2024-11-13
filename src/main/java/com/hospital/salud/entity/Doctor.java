@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class Doctor {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
 
@@ -27,5 +29,10 @@ public class Doctor {
     @OneToOne
     @JoinColumn(name = "persona_ci", referencedColumnName = "ci")
     private Persona persona;
-    
+
+    @OneToMany(mappedBy="doctor")
+    @JsonIgnore
+    private List<Horario> horarios;
+
+
 }

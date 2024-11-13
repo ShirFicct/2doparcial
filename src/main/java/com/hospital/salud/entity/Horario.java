@@ -28,7 +28,7 @@ public class Horario {
 private boolean activo;
     @ManyToOne
     @JoinColumn(name = "doctor_id")
-    @JsonIgnore
+
     private Doctor doctor;
 
     // Relación opcional para acceder a todas las reservas en este horario
