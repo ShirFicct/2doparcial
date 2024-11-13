@@ -32,6 +32,19 @@ public class HistoriaClinicaController {
         );
     }
 
+    @GetMapping("/paciente/{id}")
+    public ResponseEntity<ApiResponse<List<HistoriaClinica>>> obtenerTodasLasHistoriasPaciente(@PathVariable Long id) {
+        List<HistoriaClinica> historiasClinicas = historiaClinicaService.findAllByPaciente(id);
+        return new ResponseEntity<>(
+                ApiResponse.<List<HistoriaClinica>>builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message("Lista de todas las historias clínicas de paciente "+ id)
+                        .data(historiasClinicas)
+                        .build(),
+                HttpStatus.OK
+        );
+    }
+
     // Obtener una historia clínica por ID
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<HistoriaClinica>> obtenerHistoriaPorId(@PathVariable Long id) {

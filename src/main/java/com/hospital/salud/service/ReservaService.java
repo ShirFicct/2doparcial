@@ -34,6 +34,8 @@ public class ReservaService {
 
     @Autowired
     private HorarioRepository horarioRepository;
+    @Autowired
+    private PacienteService pacienteService;
 
     public Reserva crearReserva(ReservaDTO reservaDTO) {
         Paciente paciente = pacienteRepository.findById(reservaDTO.getPacienteId())
@@ -107,4 +109,14 @@ public class ReservaService {
         return reservaRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reserva no encontrada"));
     }
+
+    public List<Reserva>findAllByPaciente(Long pacienteId) {
+        Paciente paciente= pacienteService.obtenerPacientePorId(pacienteId);
+
+        if (paciente==null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Paciente no encontrado");
+        }
+        return reservaRepository.findByPacienteId(pacienteId);
+    }
+
 }

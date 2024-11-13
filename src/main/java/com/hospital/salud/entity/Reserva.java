@@ -32,6 +32,5 @@ private Long id;
     // Relación con Horario
     @ManyToOne
     @JoinColumn(name = "horario_id")
-    @JsonIgnore
     private Horario horario;
 }

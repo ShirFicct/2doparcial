@@ -34,6 +34,19 @@ public class ReservaController {
         );
     }
 
+    @GetMapping("/paciente/{id}")
+    public ResponseEntity<ApiResponse<List<Reserva>>> listarTodasLasReservasPaciente(@PathVariable Long id) {
+        List<Reserva> reservas = reservaService.findAllByPaciente(id);
+        return new ResponseEntity<>(
+                ApiResponse.<List<Reserva>>builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message("Lista de todas las reservas"+ id)
+                        .data(reservas)
+                        .build(),
+                HttpStatus.OK
+        );
+    }
+
     // Endpoint para obtener una reserva por ID
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Reserva>> obtenerReservaPorId(@PathVariable Long id) {
