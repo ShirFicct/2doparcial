@@ -28,6 +28,6 @@ public class Paciente {
     private Persona persona;
 
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
-    private List<reserva> reservas;
+    private List<Reserva> reservas;
     
 }
