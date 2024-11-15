@@ -1,10 +1,7 @@
 package com.hospital.salud.service;
 
 import com.hospital.salud.dto.ReservaDTO;
-import com.hospital.salud.entity.Reserva;
-import com.hospital.salud.entity.Paciente;
-import com.hospital.salud.entity.Horario;
-import com.hospital.salud.entity.Doctor;
+import com.hospital.salud.entity.*;
 
 import com.hospital.salud.repository.ReservaRepository;
 import com.hospital.salud.repository.PacienteRepository;
@@ -36,6 +33,8 @@ public class ReservaService {
     private HorarioRepository horarioRepository;
     @Autowired
     private PacienteService pacienteService;
+    @Autowired
+    private EspecialidadService especialidadService;
 
     public Reserva crearReserva(ReservaDTO reservaDTO) {
         Paciente paciente = pacienteRepository.findById(reservaDTO.getPacienteId())

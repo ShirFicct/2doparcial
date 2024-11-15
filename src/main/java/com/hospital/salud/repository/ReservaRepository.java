@@ -20,4 +20,6 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
     boolean existsByPacienteAndFechaRegistroReserva(Paciente paciente, LocalDate fechaRegistroReserva);
 
     List<Reserva> findByPacienteId(Long pacienteId);
+
+
 }
