@@ -22,13 +22,9 @@ public class EspecialidadService {
 
     public Especialida obtenerEspecialidad(Long id) {
         Optional<Especialida> especialidad = especialidadRepository.findById(id);
-<<<<<<< HEAD
-        if (!especialidad.isPresent()) {
-=======
         if (especialidad.isPresent()) {
             return especialidad.get();
             }else {
->>>>>>> 0a6b73cc5e43b0c41e12c72ca0cfd80e5ec51314
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Especialidad no encontrada");
         }
 

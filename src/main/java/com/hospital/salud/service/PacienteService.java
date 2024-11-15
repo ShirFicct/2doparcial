@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -31,99 +30,101 @@ import java.util.Set;
 @Service
 public class PacienteService {
 
-    @Autowired
-    private PacienteRepository pacienteRepository;
+	@Autowired
+	private PacienteRepository pacienteRepository;
 
-    @Autowired
-    private PersonaRepository personaRepository;
-    
-    @Autowired
+	@Autowired
+	private PersonaRepository personaRepository;
+
+	@Autowired
 	private UsuarioRepository usuarioRepository;
-    
-    @Autowired
+
+	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
-	
+
 	@Transactional
-    public void importarPacientesDesdeExcel(MultipartFile file) throws IOException {
-        Workbook workbook = WorkbookFactory.create(file.getInputStream());
-        Sheet sheet = workbook.getSheetAt(0); 
+	public void importarPacientesDesdeExcel(MultipartFile file) throws IOException {
+		Workbook workbook = WorkbookFactory.create(file.getInputStream());
+		Sheet sheet = workbook.getSheetAt(0);
 
-        Set<String> emailsEnArchivo = new HashSet<>();
+		Set<String> emailsEnArchivo = new HashSet<>();
 
-        for (Row row : sheet) {
-            if (row.getRowNum() == 0) continue;
-            
-            String ci = row.getCell(0).getStringCellValue();
-            String nombre = row.getCell(1).getStringCellValue();
-            String apellido = row.getCell(2).getStringCellValue();
-            String telefono = row.getCell(3).getStringCellValue();
-            Date fechaNacimiento = row.getCell(4).getDateCellValue();
-            String sexo = row.getCell(5).getStringCellValue();
-            String email = row.getCell(6).getStringCellValue();
-            String password = row.getCell(7).getStringCellValue();
-            String nroSeguro = row.getCell(8).getStringCellValue();
+		for (Row row : sheet) {
+			if (row.getRowNum() == 0)
+				continue;
 
-            emailsEnArchivo.add(email); 
+			String ci = row.getCell(0).getStringCellValue();
+			String nombre = row.getCell(1).getStringCellValue();
+			String apellido = row.getCell(2).getStringCellValue();
+			String telefono = row.getCell(3).getStringCellValue();
+			Date fechaNacimiento = row.getCell(4).getDateCellValue();
+			String sexo = row.getCell(5).getStringCellValue();
+			String email = row.getCell(6).getStringCellValue();
+			String password = row.getCell(7).getStringCellValue();
+			String nroSeguro = row.getCell(8).getStringCellValue();
 
-            Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(email);
+			emailsEnArchivo.add(email);
 
-            if (usuarioExistente.isPresent()) {
-                
-                Paciente pacienteExistente = usuarioExistente.get().getPersona().getPaciente();
-                
-                if (pacienteExistente != null) {
-                    pacienteExistente.setNroSeguro(nroSeguro);
-                    pacienteRepository.save(pacienteExistente);
-                }
-                
-            } else {
-                
-                Persona persona = new Persona();
-                persona.setCi(ci);
-                persona.setNombre(nombre);
-                persona.setApellido(apellido);
-                persona.setTelefono(telefono);
-                persona.setFechaNacimiento(fechaNacimiento);
-                persona.setSexo(sexo);
-                personaRepository.save(persona);
+			Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(email);
 
-                Usuario usuario = new Usuario();
-                usuario.setEmail(email);
-                usuario.setPassword(passwordEncoder.encode(password));
-                usuario.setPersona(persona);
-                usuarioRepository.save(usuario);
+			if (usuarioExistente.isPresent()) {
 
-                Paciente paciente = new Paciente();
-                paciente.setPersona(persona);
-                paciente.setNroSeguro(nroSeguro);
-                pacienteRepository.save(paciente);
-            }
-        }
+				Paciente pacienteExistente = usuarioExistente.get().getPersona().getPaciente();
 
-        List<Usuario> pacientesExistentes = usuarioRepository.findAll();
-        
-        for (Usuario paciente : pacientesExistentes) {
-            if (!emailsEnArchivo.contains(paciente.getEmail())) {
-            	paciente.setActivo(true);
-            	paciente.setCredencialesNoExpiradas(true);
-            	paciente.setCuentaNoBloqueada(true);
-            	paciente.setCuentaNoBloqueada(true);
-                usuarioRepository.save(paciente);
-            }
-        }
+				if (pacienteExistente != null) {
+					pacienteExistente.setNroSeguro(nroSeguro);
+					pacienteRepository.save(pacienteExistente);
+				}
 
-        workbook.close();
-    }
-    public List<Paciente> listarTodosLosPacientes() {
-        return pacienteRepository.findAll();
-    }
+			} else {
 
-    public Paciente obtenerPacientePorId(Long pacienteId) {
-        Optional<Paciente> paciente= pacienteRepository.findById(pacienteId);
-        if (paciente.isPresent()) {
-            return paciente.get();
-        }else {
-               throw  new ResponseStatusException(HttpStatus.NOT_FOUND, "Paciente no encontrado");
-    }
-    }
+				Persona persona = new Persona();
+				persona.setCi(ci);
+				persona.setNombre(nombre);
+				persona.setApellido(apellido);
+				persona.setTelefono(telefono);
+				persona.setFechaNacimiento(fechaNacimiento);
+				persona.setSexo(sexo);
+				personaRepository.save(persona);
+
+				Usuario usuario = new Usuario();
+				usuario.setEmail(email);
+				usuario.setPassword(passwordEncoder.encode(password));
+				usuario.setPersona(persona);
+				usuarioRepository.save(usuario);
+
+				Paciente paciente = new Paciente();
+				paciente.setPersona(persona);
+				paciente.setNroSeguro(nroSeguro);
+				pacienteRepository.save(paciente);
+			}
+		}
+
+		List<Usuario> pacientesExistentes = usuarioRepository.findAll();
+
+		for (Usuario paciente : pacientesExistentes) {
+			if (!emailsEnArchivo.contains(paciente.getEmail())) {
+				paciente.setActivo(true);
+				paciente.setCredencialesNoExpiradas(true);
+				paciente.setCuentaNoBloqueada(true);
+				paciente.setCuentaNoBloqueada(true);
+				usuarioRepository.save(paciente);
+			}
+		}
+
+		workbook.close();
+	}
+
+	public List<Paciente> listarTodosLosPacientes() {
+		return pacienteRepository.findAll();
+	}
+
+	public Paciente obtenerPacientePorId(Long pacienteId) {
+		Optional<Paciente> paciente = pacienteRepository.findById(pacienteId);
+		if (paciente.isPresent()) {
+			return paciente.get();
+		} else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Paciente no encontrado");
+		}
+	}
 }
