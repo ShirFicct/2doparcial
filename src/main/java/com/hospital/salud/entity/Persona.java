@@ -1,6 +1,5 @@
 package com.hospital.salud.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,7 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "persona", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(name = "persona", uniqueConstraints = @UniqueConstraint(columnNames = "ci"))
 public class Persona {
 
 	@Id
@@ -36,5 +35,8 @@ public class Persona {
 	@OneToOne(mappedBy = "persona")
 	@JsonIgnore
 	private Paciente paciente;
+	
+	@OneToOne(mappedBy = "persona")
+	private Usuario usuario;
 	
 }

@@ -32,8 +32,8 @@ public class SegurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-				.cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource()))
-				.csrf(AbstractHttpConfigurer::disable)
+//				.cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource()))
+				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers(
 								"/salud/v3/api-docs/**",

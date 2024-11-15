@@ -1,6 +1,7 @@
 package com.hospital.salud.controller;
 
 import com.hospital.salud.dto.UsuarioDTO;
+import com.hospital.salud.entity.Persona;
 import com.hospital.salud.entity.Usuario;
 import com.hospital.salud.response.ApiResponse;
 import com.hospital.salud.service.UsuarioService;
@@ -28,7 +29,7 @@ public class UsuarioController {
     private UsuarioService service;
 
 	@GetMapping
-	@PreAuthorize("hasAuthority('ADMINISTRAR_PERSONAL')")
+//	@PreAuthorize("hasAuthority('ADMINISTRAR_PERSONAL')")
 	public ResponseEntity<ApiResponse<List<Usuario>>> listarUsuarios(@RequestParam(value = "search", required = false) String searchTerm) {
 		List<Usuario> user;
 		if (searchTerm != null && !searchTerm.isEmpty()) {
@@ -38,6 +39,25 @@ public class UsuarioController {
         }
 		return new ResponseEntity<>(
 				ApiResponse.<List<Usuario>>builder()
+						.statusCode(HttpStatus.OK.value())
+						.message(HttpStatusMessage.getMessage(HttpStatus.OK))
+						.data(user)
+						.build(),
+				HttpStatus.OK
+		);
+	}
+	
+	@GetMapping("/persona")
+	public ResponseEntity<ApiResponse<List<Persona>>> listarUsuariosPersonas(@RequestParam(value = "search", required = false) String searchTerm) {
+		List<Persona> user;
+		if (searchTerm != null && !searchTerm.isEmpty()) {
+//			user = service.buscarUsuarios(searchTerm);
+			user = service.listUsuarioPersona();
+        } else {
+        	user = service.listUsuarioPersona();
+        }
+		return new ResponseEntity<>(
+				ApiResponse.<List<Persona>>builder()
 						.statusCode(HttpStatus.OK.value())
 						.message(HttpStatusMessage.getMessage(HttpStatus.OK))
 						.data(user)

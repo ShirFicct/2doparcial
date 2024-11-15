@@ -57,6 +57,10 @@ public class UsuarioService {
 	public List<Usuario> listUsuario() {
 		return usuarioRepository.findAll();
 	}
+	
+	public List<Persona> listUsuarioPersona() {
+		return personaRepository.findAll();
+	}
 
 	public Long getUsuariorById(String name) {
 		Usuario usuario = usuarioRepository.findByEmail(name)
